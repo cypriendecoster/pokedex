@@ -6,8 +6,15 @@ export default function Navbar() {
             <nav className="container mx-auto px-4 py-3 flex items-center justify-between">
 
                 {/* Logo / Titre */}
-                <Link to={"/"} className="text-2xl font-black tracking-tight" style={{ color: "var(--poke-red)" }}>
-                    Pokédex
+                <Link to="/" className="flex items-center gap-2" >
+                    <img
+                        src="/assets/pngegg.png"
+                        alt="Pokémon logo"
+                        className="w-8 h-8 object-contain"
+                    />
+                    <span className="text-2x1 font-black tracking-tight" style={{ color: "var(--poke-red)" }}>
+                        Pokédex
+                    </span>
                 </Link>
 
                 {/*Menu */}
