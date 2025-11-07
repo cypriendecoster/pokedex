@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import TypeBadge from "../components/TypeBadge";
 import StatBar from "../components/StatBar";
+import PokedexLayout from "../components/PokedexLayout";
 
 export default function PokemonDetails() {
     const { name } = useParams();
@@ -20,7 +21,7 @@ export default function PokemonDetails() {
     if (!pokemon) return <p className="text-center py-8">Chargement...</p>;
 
     return (
-        <div className="max-w-md mx-auto text-center">
+        <PokedexLayout>
             <button
                 onClick={() => navigate(-1)}
                 className="mb-4 bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
@@ -56,6 +57,6 @@ export default function PokemonDetails() {
                     />
                 ))}
             </div>
-        </div>
+        </PokedexLayout>
     );
 }

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getPokemonList } from "../api/pokeapi";
 import Loader from "../components/Loader";
 import SearchBar from "../components/SearchBar";
+import PokedexLayout from "../components/PokedexLayout";
 
 export default function Pokedex() {
 
@@ -28,7 +29,7 @@ export default function Pokedex() {
     );
 
     return (
-        <div>
+        <PokedexLayout>
             <h1 className="text-3xl font-bold mb-4 text-[var(--poke-blue)]">
                 Pokédex
             </h1>
@@ -45,6 +46,6 @@ export default function Pokedex() {
                     />
                 ))}
             </div>
-        </div>
+        </PokedexLayout>
     );
 }
