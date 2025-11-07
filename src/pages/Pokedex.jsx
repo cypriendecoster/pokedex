@@ -22,7 +22,7 @@ export default function Pokedex() {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {pokemonList.map((pokemon) => (
-                    <PokemonCard key={pokemon.name} name={pokemon.name} />
+                    <PokemonCard key={pokemon.name} name={pokemon.name} sprite={pokemon.sprite} />
                 ))}
             </div>
         </div>
