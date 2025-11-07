@@ -4,6 +4,8 @@ import Pokedex from "./pages/Pokedex.jsx";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
+import PokemonDetails from "./pages/PokemonDetails.jsx";
+
 
 export default function App() {
   return (
@@ -15,6 +17,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/pokedex" element={<Pokedex />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/pokemon/:name" element={<PokemonDetails />} />
         </Routes>
       </main>
 

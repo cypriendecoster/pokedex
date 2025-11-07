@@ -1,8 +1,9 @@
 import TypeBadge from "./TypeBadge";
+import { Link } from "react-router-dom";
 
 export default function PokemonCard({ name, sprite, types }) {
   return (
-    <div className="poke-card text-center">
+    <Link to={`/pokemon/${name}`} className="poke-card text-center block hover:scale-105 transition">
       <img 
         src={sprite} 
         alt={name} 
@@ -14,6 +15,6 @@ export default function PokemonCard({ name, sprite, types }) {
             <TypeBadge key={type} type={type} /> 
         ))}
       </div>
-    </div>
+    </Link>
   );
 }
