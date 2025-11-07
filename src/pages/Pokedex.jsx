@@ -1,32 +1,51 @@
 import PokemonCard from "../components/PokemonCard";
 import { useEffect, useState } from "react";
 import { getPokemonList } from "../api/pokeapi";
-import SearchBar from "../components/SearchBar";
 import PokedexLayout from "../components/PokedexLayout";
 import PokeLoader from "../components/PokeLoader";
+import FilterBar from "../components/FilterBar";
 
 export default function Pokedex() {
-
     const [pokemonList, setPokemonList] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [searchValue, setSearchValue] = useState("");
+    const [filteredPokemon, setFilteredPokemon] = useState([]);
 
+    // Filters
+    const [searchValue, setSearchValue] = useState("");
+    const [selectedType, setSelectedType] = useState("");
+
+    const [loading, setLoading] = useState(true);
+
+    // Fetch Pokémon list
     useEffect(() => {
         async function fetchData() {
-            const data = await getPokemonList();
+            const data = await getPokemonList(151); // Gen 1 pour l'instant
             setPokemonList(data);
+            setFilteredPokemon(data);
             setLoading(false);
         }
         fetchData();
     }, []);
 
-    if (loading) {
-        return <PokeLoader />;
-    }
+    // Filter logic
+    useEffect(() => {
+        let result = pokemonList;
 
-    const filteredPokemon = pokemonList.filter((pokemon) =>
-        pokemon.name.toLowerCase().includes(searchValue.toLowerCase())
-    );
+        // Search
+        if (searchValue) {
+            result = result.filter((pokemon) =>
+                pokemon.name.toLowerCase().includes(searchValue.toLowerCase())
+            );
+        }
+
+        // Type
+        if (selectedType) {
+            result = result.filter((pokemon) => pokemon.types.includes(selectedType));
+        }
+
+        setFilteredPokemon(result);
+    }, [searchValue, selectedType, pokemonList]);
+
+    if (loading) return <PokeLoader />;
 
     return (
         <PokedexLayout>
@@ -34,8 +53,15 @@ export default function Pokedex() {
                 Pokédex
             </h1>
 
-            <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
+            {/* ✅ NEW FILTER BAR */}
+            <FilterBar
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                selectedType={selectedType}
+                setSelectedType={setSelectedType}
+            />
 
+            {/* Pokémon grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {filteredPokemon.map((pokemon) => (
                     <PokemonCard
