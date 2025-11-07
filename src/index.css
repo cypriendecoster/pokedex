@@ -39,3 +39,23 @@ body,
 body {
   @apply bg-[var(--paper)] text-[var(--ink)];
 }
+
+.scan-line {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+      transparent 0%,
+      rgba(0, 200, 255, 0.3) 50%,
+      transparent 100%);
+  animation: scanDown 1.8s ease-in-out forwards;
+  pointer-events: none;
+}
+
+@keyframes scanDown {
+  0% {
+    transform : translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}

@@ -22,40 +22,45 @@ export default function PokemonDetails() {
 
     return (
         <PokedexLayout>
-            <button
-                onClick={() => navigate(-1)}
-                className="mb-4 bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
-            >
-                ← Retour
-            </button>
+            <div className="relative overflow-hidden">
+                <div className="scan-line"></div>
+                <div className="z-10 relative">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="mb-4 bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+                    >
+                        ← Retour
+                    </button>
 
-            <h1 className="text-3xl font-bold capitalize mb-2">{pokemon.name}</h1>
+                    <h1 className="text-3xl font-bold capitalize mb-2">{pokemon.name}</h1>
 
-            <img
-                src={
-                    pokemon.sprites.other["official-artwork"].front_default ||
-                    pokemon.sprites.front_default
-                }
-                alt={pokemon.name}
-                className="w-40 h-40 mx-auto mb-4"
-            />
-
-            <div className="flex justify-center gap-2 mb-4">
-                {pokemon.types.map((t) => (
-                    <TypeBadge key={t.type.name} type={t.type.name} />
-                ))}
-            </div>
-
-            <h2 className="text-xl font-semibold mb-2">Stats</h2>
-
-            <div className="space-y-2 text-left">
-                {pokemon.stats.map((stat) => (
-                    <StatBar
-                        key={stat.stat.name}
-                        label={stat.stat.name}
-                        value={stat.base_stat}
+                    <img
+                        src={
+                            pokemon.sprites.other["official-artwork"].front_default ||
+                            pokemon.sprites.front_default
+                        }
+                        alt={pokemon.name}
+                        className="w-40 h-40 mx-auto mb-4"
                     />
-                ))}
+
+                    <div className="flex justify-center gap-2 mb-4">
+                        {pokemon.types.map((t) => (
+                            <TypeBadge key={t.type.name} type={t.type.name} />
+                        ))}
+                    </div>
+
+                    <h2 className="text-xl font-semibold mb-2">Stats</h2>
+
+                    <div className="space-y-2 text-left">
+                        {pokemon.stats.map((stat) => (
+                            <StatBar
+                                key={stat.stat.name}
+                                label={stat.stat.name}
+                                value={stat.base_stat}
+                            />
+                        ))}
+                    </div>
+                </div>
             </div>
         </PokedexLayout>
     );
