@@ -352,3 +352,8 @@ button.group:hover .shine-sweep {
   border-radius: 999px;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, .7) inset;
 }
+
+/* Shiny glow */
+.shiny-glow {
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, .55)) drop-shadow(0 0 2px rgba(255, 255, 255, .6));
+}
