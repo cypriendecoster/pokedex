@@ -243,3 +243,112 @@ button.group:hover .shine-sweep {
 .duration-400 {
   transition-duration: 400ms;
 }
+
+/* ===== Evolution Tree — Nintendo style connectors ===== */
+@keyframes line-draw {
+  from {
+    transform: scaleY(0);
+    opacity: .0;
+  }
+
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes line-draw-h {
+  from {
+    transform: scaleX(0);
+    opacity: .0;
+  }
+
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* Tige verticale principale (depuis le parent) */
+.evo-line-v {
+  position: absolute;
+  top: -6px;
+  /* colle au bas de la carte parent */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 18px;
+  background: linear-gradient(180deg, #9ca3af, #6b7280);
+  border-radius: 2px;
+  transform-origin: top;
+  animation: line-draw 400ms ease-out forwards;
+  box-shadow: 0 0 4px rgba(0, 0, 0, .08);
+}
+
+/* Barre horizontale centrale reliant toutes les branches */
+.evo-line-h {
+  position: relative;
+  margin-top: 12px;
+  width: min(520px, 90%);
+  height: 2px;
+  background: linear-gradient(90deg, #9ca3af, #6b7280);
+  border-radius: 2px;
+  transform-origin: left;
+  animation: line-draw-h 450ms ease-out forwards;
+  box-shadow: 0 0 4px rgba(0, 0, 0, .08);
+}
+
+/* Petite tige verticale pour chaque enfant, part de la barre horizontale */
+.evo-branch-v {
+  width: 2px;
+  height: 14px;
+  background: linear-gradient(180deg, #9ca3af, #6b7280);
+  border-radius: 2px;
+  transform-origin: top;
+  animation: line-draw 350ms 120ms ease-out forwards;
+  box-shadow: 0 0 3px rgba(0, 0, 0, .06);
+}
+
+/* Flèche (triangle) indiquant la direction vers l'enfant */
+.evo-arrow {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid #6b7280;
+  /* gris */
+  margin-top: 2px;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .1));
+  opacity: .95;
+}
+
+/* Mini Pokéball au nœud de branche */
+.evo-ball {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  margin-top: 4px;
+  position: relative;
+  background:
+    linear-gradient(180deg, #ffffff 50%, #ef4444 50%);
+  /* haut blanc, bas rouge */
+  border: 2px solid #111827;
+  /* gris très foncé */
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .6) inset,
+    0 1px 4px rgba(0, 0, 0, .15);
+}
+
+.evo-ball::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 1px solid #111827;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .7) inset;
+}
