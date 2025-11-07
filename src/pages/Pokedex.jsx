@@ -15,9 +15,17 @@ export default function Pokedex() {
     const [selectedType, setSelectedType] = useState("");
     const [selectedGen, setSelectedGen] = useState("");
 
+    const [minHP, setMinHP] = useState(0);
+    const [minAttack, setMinAttack] = useState(0);
+    const [minDefense, setMinDefense] = useState(0);
+    const [minSpAttack, setMinSpAttack] = useState(0);
+    const [minSpDefense, setMinSpDefense] = useState(0);
+    const [minSpeed, setMinSpeed] = useState(0);
+    const [minTotalStats, setMinTotalStats] = useState(0);
+
     useEffect(() => {
         async function fetchData() {
-            const data = await getPokemonList(1010); // Full Pokédex
+            const data = await getPokemonList();
             setPokemonList(data);
             setFilteredPokemon(data);
             setLoading(false);
@@ -28,19 +36,19 @@ export default function Pokedex() {
     useEffect(() => {
         let result = pokemonList;
 
-        // ✅ Filter: Name
+        // Search
         if (searchValue) {
             result = result.filter((p) =>
                 p.name.toLowerCase().includes(searchValue.toLowerCase())
             );
         }
 
-        // ✅ Filter: Type
+        // Type
         if (selectedType) {
             result = result.filter((p) => p.types.includes(selectedType));
         }
 
-        // ✅ Filter: Generation
+        // Generation ranges
         const genRanges = {
             1: [1, 151], 2: [152, 251], 3: [252, 386], 4: [387, 493],
             5: [494, 649], 6: [650, 721], 7: [722, 809], 8: [810, 898], 9: [899, 1010]
@@ -51,8 +59,35 @@ export default function Pokedex() {
             result = result.filter((p) => p.id >= min && p.id <= max);
         }
 
+        // Stats filters
+        if (minHP > 0) result = result.filter((p) => p.stats.hp >= minHP);
+        if (minAttack > 0) result = result.filter((p) => p.stats.attack >= minAttack);
+        if (minDefense > 0) result = result.filter((p) => p.stats.defense >= minDefense);
+        if (minSpAttack > 0) result = result.filter((p) => p.stats.special_attack >= minSpAttack);
+        if (minSpDefense > 0) result = result.filter((p) => p.stats.special_defense >= minSpDefense);
+        if (minSpeed > 0) result = result.filter((p) => p.stats.speed >= minSpeed);
+
+        if (minTotalStats > 0) {
+            result = result.filter((p) => {
+                const total = Object.values(p.stats).reduce((a, b) => a + b, 0);
+                return total >= minTotalStats;
+            });
+        }
+
         setFilteredPokemon(result);
-    }, [searchValue, selectedType, selectedGen, pokemonList]);
+    }, [
+        searchValue,
+        selectedType,
+        selectedGen,
+        minHP,
+        minAttack,
+        minDefense,
+        minSpAttack,
+        minSpDefense,
+        minSpeed,
+        minTotalStats,
+        pokemonList
+    ]);
 
     if (loading) return <PokeLoader />;
 
@@ -64,15 +99,24 @@ export default function Pokedex() {
                 searchValue={searchValue} setSearchValue={setSearchValue}
                 selectedType={selectedType} setSelectedType={setSelectedType}
                 selectedGen={selectedGen} setSelectedGen={setSelectedGen}
+                minHP={minHP} setMinHP={setMinHP}
+                minAttack={minAttack} setMinAttack={setMinAttack}
+                minDefense={minDefense} setMinDefense={setMinDefense}
+                minSpAttack={minSpAttack} setMinSpAttack={setMinSpAttack}
+                minSpDefense={minSpDefense} setMinSpDefense={setMinSpDefense}
+                minSpeed={minSpeed} setMinSpeed={setMinSpeed}
+                minTotalStats={minTotalStats} setMinTotalStats={setMinTotalStats}
             />
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {filteredPokemon.map((pokemon) => (
-                    <PokemonCard key={pokemon.name} {...pokemon} />
+                    <PokemonCard key={pokemon.id} {...pokemon} />
                 ))}
             </div>
         </PokedexLayout>
     );
 }
+
+
 
 
