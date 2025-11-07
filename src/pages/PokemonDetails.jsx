@@ -16,7 +16,7 @@ export default function PokemonDetails() {
 
     // ✅ Radar sound
     useEffect(() => {
-        const audio = new Audio("/sounds/radar.mp3");
+        const audio = new Audio("/sounds/radar.mpmp3");
         audio.volume = 0.5;
 
         const tryPlay = () => {
@@ -36,35 +36,70 @@ export default function PokemonDetails() {
         });
     }, []);
 
-    // ✅ Fetch Pokémon + evolution tree
+    // ✅ Fetch Pokémon + Evolution Tree + Conditions
     useEffect(() => {
         async function fetchPokemon() {
-            // 1) Base Pokémon data
+            // 1) Pokémon info
             const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
             setPokemon(res.data);
 
-            // 2) Species
+            // 2) Species data
             const species = await axios.get(res.data.species.url);
 
-            // 3) Evolution Chain
+            // 3) Evolution chain data
             const evoChain = await axios.get(species.data.evolution_chain.url);
 
-            // ✅ Build a tree structure of evolutions
-            function extractEvolutionTree(chain) {
+            function extractEvolutionTreeWithConditions(chain) {
+                const pretty = (s) => s?.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+                const formatConditions = (detailsArr = []) => {
+                    if (!detailsArr.length) return [];
+                    const d = detailsArr[0];
+                    const parts = [];
+
+                    if (d.trigger?.name === "use-item" && d.item?.name) {
+                        parts.push(`Utiliser ${pretty(d.item.name)}`);
+                    }
+                    if (d.trigger?.name === "level-up") {
+                        if (d.min_level) parts.push(`Niveau ${d.min_level}`);
+                        if (d.min_happiness) parts.push(`Amitié ≥ ${d.min_happiness}`);
+                        if (d.min_beauty) parts.push(`Beauté ≥ ${d.min_beauty}`);
+                        if (d.time_of_day)
+                            parts.push(d.time_of_day === "day" ? "Jour" : "Nuit");
+                        if (d.location?.name) parts.push(`Lieu: ${pretty(d.location.name)}`);
+                        if (d.held_item?.name) parts.push(`Tenir: ${pretty(d.held_item.name)}`);
+                        if (typeof d.gender === "number")
+                            parts.push(d.gender === 1 ? "♀ requis" : "♂ requis");
+                        if (typeof d.relative_physical_stats === "number") {
+                            const r = d.relative_physical_stats;
+                            parts.push(r > 0 ? "Attaque > Défense" : r < 0 ? "Attaque < Défense" : "Attaque = Défense");
+                        }
+                        if (d.turn_upside_down) parts.push("Console à l'envers");
+                    }
+                    if (d.trigger?.name === "trade") {
+                        parts.push("Échange");
+                        if (d.held_item?.name) parts.push(`en tenant ${pretty(d.held_item.name)}`);
+                    }
+                    return parts;
+                };
+
                 const build = (node) => {
                     const urlParts = node.species.url.split("/").filter(Boolean);
-                    const id = urlParts[urlParts.length - 1]; // extract ID
-                    return {
-                        name: node.species.name,
-                        id,
-                        evolves_to: node.evolves_to.map(build) // recursion
-                    };
+                    const id = urlParts[urlParts.length - 1];
+
+                    const children = node.evolves_to.map((e) => {
+                        const child = build(e);
+                        child.conditions = formatConditions(e.evolution_details);
+                        return child;
+                    });
+
+                    return { name: node.species.name, id, evolves_to: children };
                 };
 
                 return build(chain);
             }
 
-            const tree = extractEvolutionTree(evoChain.data.chain);
+            const tree = extractEvolutionTreeWithConditions(evoChain.data.chain);
             setEvolutionChain(tree);
         }
 
@@ -90,8 +125,8 @@ export default function PokemonDetails() {
 
                     <img
                         src={
-                            pokemon.sprites.other["official-artwork"].front_default ||
-                            pokemon.sprites.front_default
+                            pokemon.sprites?.other?.["official-artwork"]?.front_default ||
+                            pokemon.sprites?.front_default
                         }
                         alt={pokemon.name}
                         className="w-40 h-40 mx-auto mb-4"
@@ -119,13 +154,19 @@ export default function PokemonDetails() {
                     <h2 className="text-xl font-semibold mt-6 mb-3 text-center">Évolutions</h2>
 
                     <div className="flex justify-center">
-                        <EvolutionTree node={evolutionChain} />
+                        {evolutionChain ? (
+                            <EvolutionTree node={evolutionChain} />
+                        ) : (
+                            <p className="text-gray-500">Aucune évolution trouvée</p>
+                        )}
                     </div>
+
                 </div>
             </div>
         </PokedexLayout>
     );
 }
+
 
 
 
