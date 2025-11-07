@@ -10,10 +10,32 @@
 }
 
 /* Classes utilitaires */
-.poke-gradient { background: linear-gradient(135deg, var(--poke-red), var(--poke-blue)); }
-.poke-card { @apply rounded-2xl shadow-lg p-4 bg-white; }
-.poke-badge { @apply text-xs font-semibold px-2 py-1 rounded-full; }
+.poke-gradient {
+  background: linear-gradient(135deg, var(--poke-red), var(--poke-blue));
+}
 
-html, body, #root { height: 100%; }
-body { @apply bg-[var(--paper)] text-[var(--ink)]; }
+.poke-card {
+  @apply bg-white rounded-2xl shadow-lg p-4 border border-gray-200 transition-transform transition-shadow duration-300;
+  background: linear-gradient(145deg, #ffffff, #f3f4f6);
+}
 
+.poke-card:hover {
+  @apply shadow-xl scale-[1.04];
+  box-shadow: 0 0 10px rgba(0, 110, 255, 0.2),
+    0 0 20px rgba(255, 215, 0, 0.15);
+  border-color: var(--poke-blue);
+}
+
+.poke-badge {
+  @apply text-xs font-semibold px-2 py-1 rounded-full;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-[var(--paper)] text-[var(--ink)];
+}
