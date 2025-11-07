@@ -13,12 +13,14 @@ export default function App() {
       <Navbar />
 
       <main className="flex-1 container mx-auto px-4 py-6">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/pokedex" element={<Pokedex />} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/pokemon/:name" element={<PokemonDetails />} />
-        </Routes>
+        <div className="page-fade">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/pokedex" element={<Pokedex />} />
+            <Route path="*" element={<NotFound />} />
+            <Route path="/pokemon/:name" element={<PokemonDetails />} />
+          </Routes>
+        </div>
       </main>
 
       <Footer />

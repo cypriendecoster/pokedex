@@ -9,6 +9,35 @@ export default function PokemonDetails() {
     const { name } = useParams();
     const navigate = useNavigate();
     const [pokemon, setPokemon] = useState(null);
+    const playScanSound = () => {
+        const audio = new Audio("/sounds/scan.mp3");
+        audio.volume = 0.5;
+        audio.play();
+    };
+
+    useEffect(() => {
+        const audio = new Audio("/sounds/radar.mp3");
+        audio.volume = 0.5;
+
+        const tryPlay = () => {
+            audio.play()
+                .then(() => {
+                    window.removeEventListener("click", tryPlay);
+                    window.removeEventListener("keydown", tryPlay);
+                    window.removeEventListener("touchstart", tryPlay);
+                })
+                .catch(() => { });
+        };
+
+        // Essaye de jouer immédiatement
+        audio.play().catch(() => {
+            // Sinon, écouter une interaction utilisateur
+            window.addEventListener("click", tryPlay);
+            window.addEventListener("keydown", tryPlay);
+            window.addEventListener("touchstart", tryPlay);
+        });
+    }, []);
+
 
     useEffect(() => {
         async function fetchPokemon() {

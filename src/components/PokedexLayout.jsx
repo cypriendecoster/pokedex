@@ -15,7 +15,7 @@ export default function PokedexLayout({ children }) {
                 </div>
 
                 <div className="bg-gray-900 border-4 border-gray-700 rounded-x1 p-4 min-h-[500px]">
-                    <div className="bg-gray-100 rounded-lg p-4 text-black min-h-[450px] overflow-auto">
+                    <div className="bg-gray-100 rounded-lg p-4 text-black min-h-[450px] overflow-auto page-fade">
                         {children}
                     </div>
                 </div>
