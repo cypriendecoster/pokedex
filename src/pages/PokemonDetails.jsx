@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import TypeBadge from "../components/TypeBadge";
+import StatBar from "../components/StatBar";
 
 export default function PokemonDetails() {
     const { name } = useParams();
@@ -48,10 +49,11 @@ export default function PokemonDetails() {
 
             <div className="space-y-2 text-left">
                 {pokemon.stats.map((stat) => (
-                    <div key={stat.stat.name}>
-                        <span className="capitalize font-medium">{stat.stat.name}: </span>
-                        <span>{stat.base_stat}</span>
-                    </div>
+                    <StatBar
+                        key={stat.stat.name}
+                        label={stat.stat.name}
+                        value={stat.base_stat}
+                    />
                 ))}
             </div>
         </div>
