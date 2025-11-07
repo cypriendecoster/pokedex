@@ -1,18 +1,25 @@
 import PokemonCard from "../components/PokemonCard";
 import { useEffect, useState } from "react";
 import { getPokemonList } from "../api/pokeapi";
+import Loader from "../components/Loader";
 
 export default function Pokedex() {
 
     const [pokemonList, setPokemonList] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchData() {
             const data = await getPokemonList();
             setPokemonList(data);
+            setLoading(false);
         }
         fetchData();
     }, []);
+
+    if(loading) {
+        return <Loader />;
+    }
 
     return (
         <div>
