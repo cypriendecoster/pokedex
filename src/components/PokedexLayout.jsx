@@ -21,9 +21,55 @@ export default function PokedexLayout({ children }) {
                 </div>
 
                 <div className="mt-4 flex justify-center gap-3">
-                    <button onClick={handleButtonSound} className="w-14 h-14 bg-blue-500 border-4 border-blue-800 rounded-full shadow-lg active: scale-90 active:shadow-inner transition-all"></button>
-                    <button className="w-6 h-6 bg-green-500 border-2 border-green-700 rounded-full shadow active:scale-90 transition-all"></button>
-                    <button className="w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-full shadow active:scale-90 transition-all"></button>
+                    <button onClick={handleButtonSound} className="
+                    relative w-14 h-14
+                    rounded-full
+                    bg-blue-500/70 backdrop-blur-md
+                    border-4 border-blue-300/70
+                    shadow-[0_0_10px_rgba(0,150,225,0.6)]
+                    active: scale-90
+                    transition-all duration-300
+                    hover:shadow-[0_0_20px_rgba(0,180,255,0.9)]
+                    ">
+                        <span className="absolute inset-0 rounded-full bg-white/20 blur-[6px] opacity-30"></span>
+                    </button>
+                    <div className="flex flex-col gap-2">
+                        {/* Red */}
+                        <button className="
+                        relative w-6 h-6 rounded-full 
+                        bg-red-500/70 backdrop-blur 
+                        border-2 border-red-300/70 
+                        shadow-[0_0_6px_rgba(255,80,80,0.6)] 
+                        hover:shadow-[0_0_10px_rgba(255,120,120,1)]
+                        active:scale-90 transition-all
+                        ">
+                            <span className="absolute inset-0 rounded-full bg-white/40 blur-[4px] opacity-40"></span>
+                        </button>
+
+                        {/* Green */}
+                        <button className="
+                         relative w-6 h-6 rounded-full 
+                         bg-green-500/70 backdrop-blur 
+                        border-2 border-green-300/70 
+                        shadow-[0_0_6px_rgba(80,255,80,0.6)]
+                        hover:shadow-[0_0_10px_rgba(120,255,120,1)]
+                        active:scale-90 transition-all
+                        ">
+                            <span className="absolute inset-0 rounded-full bg-white/40 blur-[4px] opacity-40"></span>
+                        </button>
+
+                        {/* Yellow */}
+                        <button className="
+                        relative w-6 h-6 rounded-full 
+                     bg-yellow-400/70 backdrop-blur 
+                        border-2 border-yellow-200/70 
+                        shadow-[0_0_6px_rgba(255,255,100,0.6)]
+                        hover:shadow-[0_0_10px_rgba(255,255,140,1)]
+                        active:scale-90 transition-all
+                        ">
+                            <span className="absolute inset-0 rounded-full bg-white/40 blur-[4px] opacity-40"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
