@@ -1,9 +1,9 @@
 import PokemonCard from "../components/PokemonCard";
 import { useEffect, useState } from "react";
 import { getPokemonList } from "../api/pokeapi";
-import Loader from "../components/Loader";
 import SearchBar from "../components/SearchBar";
 import PokedexLayout from "../components/PokedexLayout";
+import PokeLoader from "../components/PokeLoader";
 
 export default function Pokedex() {
 
@@ -21,7 +21,7 @@ export default function Pokedex() {
     }, []);
 
     if (loading) {
-        return <Loader />;
+        return <PokeLoader />;
     }
 
     const filteredPokemon = pokemonList.filter((pokemon) =>

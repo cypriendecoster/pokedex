@@ -76,3 +76,51 @@ body {
     transform: translateY(0);
   }
 }
+
+.pokeball {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  position: relative;
+  background: linear-gradient(to bottom,
+      #fff 50%, #e60000 50%);
+  border: 4px solid #000;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+}
+
+.pokeball::before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 6px);
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.pokeball::after {
+  content: "";
+  position: absolute;
+  top: calc(50%-2px);
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #000;
+}
+
+@keyframes spinSlow {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow{
+  animation: spinSlow 1.8s linear infinite;
+}

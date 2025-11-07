@@ -4,6 +4,7 @@ import axios from "axios";
 import TypeBadge from "../components/TypeBadge";
 import StatBar from "../components/StatBar";
 import PokedexLayout from "../components/PokedexLayout";
+import PokeLoader from "../components/PokeLoader";
 
 export default function PokemonDetails() {
     const { name } = useParams();
@@ -47,7 +48,7 @@ export default function PokemonDetails() {
         fetchPokemon();
     }, [name]);
 
-    if (!pokemon) return <p className="text-center py-8">Chargement...</p>;
+    if (!pokemon) return <PokeLoader />;
 
     return (
         <PokedexLayout>
