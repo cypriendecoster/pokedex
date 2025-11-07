@@ -121,6 +121,125 @@ body {
   }
 }
 
-.animate-spin-slow{
+.animate-spin-slow {
   animation: spinSlow 1.8s linear infinite;
+}
+
+.evo-morph {
+  transform: scale(1.15) rotate(-2deg);
+  filter: brightness(1.15);
+}
+
+.sparkle-wrap {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.spark-on {
+  opacity: 1;
+}
+
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #fff, #ffeb3b 60%, transparent 70%);
+  border-radius: 999px;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  animation: none;
+}
+
+.sp1 {
+  top: 40%;
+  left: 48%;
+}
+
+.sp2 {
+  top: 30%;
+  left: 58%;
+}
+
+.sp3 {
+  top: 50%;
+  left: 62%;
+}
+
+.sp4 {
+  top: 60%;
+  left: 45%;
+}
+
+.sp5 {
+  top: 35%;
+  left: 38%;
+}
+
+.sp6 {
+  top: 55%;
+  left: 35%;
+}
+
+.spark-on .sp1 {
+  animation: sp-pop 420ms ease-out forwards 0ms;
+}
+
+.spark-on .sp2 {
+  animation: sp-pop 420ms ease-out forwards 30ms;
+}
+
+.spark-on .sp3 {
+  animation: sp-pop 420ms ease-out forwards 60ms;
+}
+
+.spark-on .sp4 {
+  animation: sp-pop 420ms ease-out forwards 90ms;
+}
+
+.spark-on .sp5 {
+  animation: sp-pop 420ms ease-out forwards 120ms;
+}
+
+.spark-on .sp6 {
+  animation: sp-pop 420ms ease-out forwards 150ms;
+}
+
+@keyframes sp-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -90%) scale(0);
+  }
+}
+
+.shine-sweep {
+  position: absolute;
+  top: 10%;
+  left: -40%;
+  width: 40%;
+  height: 60%;
+  transform: rotate(25deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .35), transparent);
+  filter: blur(4px);
+  opacity: 0;
+  transition: opacity .25s, left .6s;
+}
+
+button.group:hover .shine-sweep {
+  opacity: 1;
+  left: 110%;
+}
+
+.duration-400 {
+  transition-duration: 400ms;
 }

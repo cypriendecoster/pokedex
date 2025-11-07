@@ -5,17 +5,16 @@ import TypeBadge from "../components/TypeBadge";
 import StatBar from "../components/StatBar";
 import PokedexLayout from "../components/PokedexLayout";
 import PokeLoader from "../components/PokeLoader";
+import EvolutionTree from "../components/EvolutionTree";
 
 export default function PokemonDetails() {
     const { name } = useParams();
     const navigate = useNavigate();
-    const [pokemon, setPokemon] = useState(null);
-    const playScanSound = () => {
-        const audio = new Audio("/sounds/scan.mp3");
-        audio.volume = 0.5;
-        audio.play();
-    };
 
+    const [pokemon, setPokemon] = useState(null);
+    const [evolutionChain, setEvolutionChain] = useState(null);
+
+    // ✅ Radar sound
     useEffect(() => {
         const audio = new Audio("/sounds/radar.mp3");
         audio.volume = 0.5;
@@ -30,21 +29,45 @@ export default function PokemonDetails() {
                 .catch(() => { });
         };
 
-        // Essaye de jouer immédiatement
         audio.play().catch(() => {
-            // Sinon, écouter une interaction utilisateur
             window.addEventListener("click", tryPlay);
             window.addEventListener("keydown", tryPlay);
             window.addEventListener("touchstart", tryPlay);
         });
     }, []);
 
-
+    // ✅ Fetch Pokémon + evolution tree
     useEffect(() => {
         async function fetchPokemon() {
+            // 1) Base Pokémon data
             const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
             setPokemon(res.data);
+
+            // 2) Species
+            const species = await axios.get(res.data.species.url);
+
+            // 3) Evolution Chain
+            const evoChain = await axios.get(species.data.evolution_chain.url);
+
+            // ✅ Build a tree structure of evolutions
+            function extractEvolutionTree(chain) {
+                const build = (node) => {
+                    const urlParts = node.species.url.split("/").filter(Boolean);
+                    const id = urlParts[urlParts.length - 1]; // extract ID
+                    return {
+                        name: node.species.name,
+                        id,
+                        evolves_to: node.evolves_to.map(build) // recursion
+                    };
+                };
+
+                return build(chain);
+            }
+
+            const tree = extractEvolutionTree(evoChain.data.chain);
+            setEvolutionChain(tree);
         }
+
         fetchPokemon();
     }, [name]);
 
@@ -54,6 +77,7 @@ export default function PokemonDetails() {
         <PokedexLayout>
             <div className="relative overflow-hidden">
                 <div className="scan-line"></div>
+
                 <div className="z-10 relative">
                     <button
                         onClick={() => navigate(-1)}
@@ -81,7 +105,7 @@ export default function PokemonDetails() {
 
                     <h2 className="text-xl font-semibold mb-2">Stats</h2>
 
-                    <div className="space-y-2 text-left">
+                    <div className="space-y-2 text-left mb-6">
                         {pokemon.stats.map((stat) => (
                             <StatBar
                                 key={stat.stat.name}
@@ -90,8 +114,18 @@ export default function PokemonDetails() {
                             />
                         ))}
                     </div>
+
+                    {/* ✅ Evolution Tree */}
+                    <h2 className="text-xl font-semibold mt-6 mb-3 text-center">Évolutions</h2>
+
+                    <div className="flex justify-center">
+                        <EvolutionTree node={evolutionChain} />
+                    </div>
                 </div>
             </div>
         </PokedexLayout>
     );
 }
+
+
+
