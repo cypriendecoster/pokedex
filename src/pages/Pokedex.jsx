@@ -17,7 +17,7 @@ export default function Pokedex() {
         fetchData();
     }, []);
 
-    if(loading) {
+    if (loading) {
         return <Loader />;
     }
 
@@ -29,7 +29,12 @@ export default function Pokedex() {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {pokemonList.map((pokemon) => (
-                    <PokemonCard key={pokemon.name} name={pokemon.name} sprite={pokemon.sprite} />
+                    <PokemonCard
+                        key={pokemon.name}
+                        name={pokemon.name}
+                        sprite={pokemon.sprite}
+                        types={pokemon.types}
+                    />
                 ))}
             </div>
         </div>
