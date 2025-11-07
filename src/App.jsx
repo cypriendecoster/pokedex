@@ -3,6 +3,7 @@ import Home from "./pages/Home.jsx";
 import Pokedex from "./pages/Pokedex.jsx";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
 
 export default function App() {
   return (
@@ -16,6 +17,8 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+
+      <Footer />
     </div>
   )
 }
