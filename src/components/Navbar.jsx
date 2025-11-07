@@ -40,6 +40,7 @@ export default function Navbar() {
                     >
                         Pokédex
                     </NavLink>
+                    <NavLink to="/favorites">Favoris ⭐</NavLink>
                 </div>
             </nav>
         </header>
