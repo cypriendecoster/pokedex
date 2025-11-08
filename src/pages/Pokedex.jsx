@@ -36,19 +36,16 @@ export default function Pokedex() {
     useEffect(() => {
         let result = pokemonList;
 
-        // Search
         if (searchValue) {
             result = result.filter((p) =>
                 p.name.toLowerCase().includes(searchValue.toLowerCase())
             );
         }
 
-        // Type
         if (selectedType) {
             result = result.filter((p) => p.types.includes(selectedType));
         }
 
-        // Generation ranges
         const genRanges = {
             1: [1, 151], 2: [152, 251], 3: [252, 386], 4: [387, 493],
             5: [494, 649], 6: [650, 721], 7: [722, 809], 8: [810, 898], 9: [899, 1010]
@@ -59,15 +56,14 @@ export default function Pokedex() {
             result = result.filter((p) => p.id >= min && p.id <= max);
         }
 
-        // Stats filters
-        if (minHP > 0) result = result.filter((p) => p.stats.hp >= minHP);
-        if (minAttack > 0) result = result.filter((p) => p.stats.attack >= minAttack);
-        if (minDefense > 0) result = result.filter((p) => p.stats.defense >= minDefense);
-        if (minSpAttack > 0) result = result.filter((p) => p.stats.special_attack >= minSpAttack);
-        if (minSpDefense > 0) result = result.filter((p) => p.stats.special_defense >= minSpDefense);
-        if (minSpeed > 0) result = result.filter((p) => p.stats.speed >= minSpeed);
+        if (minHP) result = result.filter((p) => p.stats.hp >= minHP);
+        if (minAttack) result = result.filter((p) => p.stats.attack >= minAttack);
+        if (minDefense) result = result.filter((p) => p.stats.defense >= minDefense);
+        if (minSpAttack) result = result.filter((p) => p.stats.special_attack >= minSpAttack);
+        if (minSpDefense) result = result.filter((p) => p.stats.special_defense >= minSpDefense);
+        if (minSpeed) result = result.filter((p) => p.stats.speed >= minSpeed);
 
-        if (minTotalStats > 0) {
+        if (minTotalStats) {
             result = result.filter((p) => {
                 const total = Object.values(p.stats).reduce((a, b) => a + b, 0);
                 return total >= minTotalStats;
@@ -76,16 +72,8 @@ export default function Pokedex() {
 
         setFilteredPokemon(result);
     }, [
-        searchValue,
-        selectedType,
-        selectedGen,
-        minHP,
-        minAttack,
-        minDefense,
-        minSpAttack,
-        minSpDefense,
-        minSpeed,
-        minTotalStats,
+        searchValue, selectedType, selectedGen,
+        minHP, minAttack, minDefense, minSpAttack, minSpDefense, minSpeed, minTotalStats,
         pokemonList
     ]);
 
@@ -116,6 +104,9 @@ export default function Pokedex() {
         </PokedexLayout>
     );
 }
+
+
+
 
 
 
