@@ -37,7 +37,7 @@ body,
 }
 
 body {
-  @apply bg-[var(--paper)] text-[var(--ink)];
+  background: #87cefa;
 }
 
 .scan-line {
