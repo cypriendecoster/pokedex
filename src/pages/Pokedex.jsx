@@ -1,14 +1,29 @@
 import PokemonCard from "../components/PokemonCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { getPokemonList } from "../api/pokeapi";
 import PokedexLayout from "../components/PokedexLayout";
 import PokeLoader from "../components/PokeLoader";
 import FilterBar from "../components/FilterBar";
 
+const PAGE_SIZE = 40;
+
 export default function Pokedex() {
     const [pokemonList, setPokemonList] = useState([]);
     const [filteredPokemon, setFilteredPokemon] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isFetching, setIsFetching] = useState(false);
+    const [page, setPage] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    
+
+    useEffect(() => {
+        hasMoreRef.current = hasMore;
+    }, [hasMore]);
+
+    const observerRef = useRef(null);
+    const isFetchingRef = useRef(false);
+    const hasMoreRef = useRef(true);
+
 
     // Filters
     const [searchValue, setSearchValue] = useState("");
@@ -23,15 +38,38 @@ export default function Pokedex() {
     const [minSpeed, setMinSpeed] = useState(0);
     const [minTotalStats, setMinTotalStats] = useState(0);
 
-    useEffect(() => {
-        async function fetchData() {
-            const data = await getPokemonList();
-            setPokemonList(data);
-            setFilteredPokemon(data);
+    const loadPage = useCallback(async (pageToLoad) => {
+        if (isFetchingRef.current || !hasMoreRef.current) return;
+
+        setIsFetching(true);
+        isFetchingRef.current = true;
+
+        try {
+            const newChunk = await getPokemonList(PAGE_SIZE, pageToLoad * PAGE_SIZE);
+            setPokemonList((prev) => [...prev, ...newChunk]);
+
+            if (newChunk.length < PAGE_SIZE) {
+                setHasMore(false);
+                hasMoreRef.current = false;
+            }
+        } finally {
+            setIsFetching(false);
+            isFetchingRef.current = false;
             setLoading(false);
         }
-        fetchData();
     }, []);
+
+
+    useEffect(() => {
+        loadPage(0);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+
+    useEffect(() => {
+        if (page === 0) return;
+        loadPage(page);
+    }, [page, loadPage]);
 
     useEffect(() => {
         let result = pokemonList;
@@ -77,6 +115,19 @@ export default function Pokedex() {
         pokemonList
     ]);
 
+    const sentinelRef = useCallback(node => {
+        if (isFetching || !hasMore) return;
+        if (observerRef.current) observerRef.current.disconnect();
+
+        observerRef.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting) {
+                setPage(prev => prev + 1);
+            }
+        });
+
+        if (node) observerRef.current.observe(node);
+    }, [isFetching, hasMore]);
+
     if (loading) return <PokeLoader />;
 
     return (
@@ -101,6 +152,9 @@ export default function Pokedex() {
                     <PokemonCard key={pokemon.id} {...pokemon} />
                 ))}
             </div>
+
+            <div ref={sentinelRef} className="h-10" />
+            {isFetching && <PokeLoader />}
         </PokedexLayout>
     );
 }
