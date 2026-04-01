@@ -1,6 +1,8 @@
 import { NavLink, Link } from "react-router-dom";
 
 export default function Navbar() {
+    const logoSrc = `${import.meta.env.BASE_URL}assets/pngegg.png`;
+
     return (
         <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
             <nav className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -8,7 +10,7 @@ export default function Navbar() {
                 {/* Logo / Titre */}
                 <Link to="/" className="flex items-center gap-2" >
                     <img
-                        src="/assets/pngegg.png"
+                        src={logoSrc}
                         alt="Pokémon logo"
                         className="w-8 h-8 object-contain"
                     />
